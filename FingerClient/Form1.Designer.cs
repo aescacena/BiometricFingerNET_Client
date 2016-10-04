@@ -33,7 +33,7 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.botonCerrar = new System.Windows.Forms.Button();
-            this.botonFondo = new System.Windows.Forms.Button();
+            this.comparaHuella = new System.Windows.Forms.Button();
             this.botonBorrar = new System.Windows.Forms.Button();
             this.botonMostrar = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -53,6 +53,7 @@
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90F));
@@ -87,7 +88,7 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.botonCerrar);
-            this.flowLayoutPanel1.Controls.Add(this.botonFondo);
+            this.flowLayoutPanel1.Controls.Add(this.comparaHuella);
             this.flowLayoutPanel1.Controls.Add(this.botonBorrar);
             this.flowLayoutPanel1.Controls.Add(this.botonMostrar);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -107,16 +108,16 @@
             this.botonCerrar.UseVisualStyleBackColor = true;
             this.botonCerrar.Click += new System.EventHandler(this.botonCerrar_Click);
             // 
-            // botonFondo
+            // comparaHuella
             // 
-            this.botonFondo.AutoSize = true;
-            this.botonFondo.Location = new System.Drawing.Point(84, 3);
-            this.botonFondo.Name = "botonFondo";
-            this.botonFondo.Size = new System.Drawing.Size(138, 23);
-            this.botonFondo.TabIndex = 1;
-            this.botonFondo.Text = "Establecer color de fondo";
-            this.botonFondo.UseVisualStyleBackColor = true;
-            this.botonFondo.Click += new System.EventHandler(this.botonFondo_Click);
+            this.comparaHuella.AutoSize = true;
+            this.comparaHuella.Location = new System.Drawing.Point(84, 3);
+            this.comparaHuella.Name = "comparaHuella";
+            this.comparaHuella.Size = new System.Drawing.Size(138, 23);
+            this.comparaHuella.TabIndex = 1;
+            this.comparaHuella.Text = "Comparar huella";
+            this.comparaHuella.UseVisualStyleBackColor = true;
+            this.comparaHuella.Click += new System.EventHandler(this.botonFondo_Click);
             // 
             // botonBorrar
             // 
@@ -156,6 +157,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Form1";
             this.Text = "And&oR";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -166,17 +168,16 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button botonCerrar;
-        private System.Windows.Forms.Button botonFondo;
+        private System.Windows.Forms.Button comparaHuella;
         private System.Windows.Forms.Button botonBorrar;
         private System.Windows.Forms.Button botonMostrar;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
     }
 }
 

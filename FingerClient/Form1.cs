@@ -12,6 +12,8 @@ namespace FingerClient
 {
     public partial class Form1 : Form
     {
+        private Image huella = null;
+
         public Form1()
         {
             InitializeComponent();
@@ -29,6 +31,7 @@ namespace FingerClient
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 pictureBox1.Load(openFileDialog1.FileName);
+                huella = pictureBox1.Image;
             }
         }
 
@@ -58,6 +61,11 @@ namespace FingerClient
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             else
                 pictureBox1.SizeMode = PictureBoxSizeMode.Normal;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

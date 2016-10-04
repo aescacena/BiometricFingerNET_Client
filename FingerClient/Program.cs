@@ -24,17 +24,17 @@ namespace FingerClient
         static void Main()
         {
 
-            Thread[] server = new Thread[numClients];
+            /*Thread[] server = new Thread[numClients];
             for (int i = 0; i < numClients; i++)
             {
                 server[i] = new Thread(conexion);
                 server[i].Start();
             }
-            Thread.Sleep(250);
+            Thread.Sleep(250);*/
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Form1(this));
         }
 
         private static void conexion()
