@@ -24,17 +24,17 @@ namespace FingerClient
         static void Main()
         {
 
-            /*Thread[] server = new Thread[numClients];
+            Thread[] server = new Thread[numClients];
             for (int i = 0; i < numClients; i++)
             {
                 server[i] = new Thread(conexion);
                 server[i].Start();
             }
-            Thread.Sleep(250);*/
+            Thread.Sleep(250);
 
-            Application.EnableVisualStyles();
+            /*Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1(this));
+            Application.Run(new Form1());*/
         }
 
         private static void conexion()
@@ -50,7 +50,8 @@ namespace FingerClient
                 // El token de seguridad del cliente se envía con la primera escritura.
                 cS.enviaImagen(Image.FromFile(@"C:\Users\PC_STE_19\Documents\Visual Studio 2015\Projects\BiometricFinger\alterImages\020_2_2_muchas_lineas.jpg", true));
 
-                if(cS.leeCadena() == "ENCONTRADO"){
+                if(cS.leeCadena() == "IDENTIFICADO")
+                {
                     string nombreUsuario = cS.leeCadena();
                     Console.WriteLine("Nombre usuario: "+nombreUsuario);
                 }
