@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO.Pipes;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,7 +14,7 @@ namespace FingerClient
 {
     public partial class Form1 : Form
     {
-        private Image huella = null;
+        public Image huella = null;
 
         public Form1()
         {
@@ -41,12 +43,33 @@ namespace FingerClient
             pictureBox1.Image = null;
         }
 
-        private void botonFondo_Click(object sender, EventArgs e)
+        private void comparaHuella_Click(object sender, EventArgs e)
         {
             //Muestra el color del dialogo. Si el usuario hace click en OK,
             //cambia PictureBox al color que el suario a seleccionado.
-            if (colorDialog1.ShowDialog() == DialogResult.OK)
-                pictureBox1.BackColor = colorDialog1.Color;
+            /*if (colorDialog1.ShowDialog() == DialogResult.OK)
+                pictureBox1.BackColor = colorDialog1.Color;*/
+
+            NamedPipeClientStream pipeCliente = new NamedPipeClientStream("161.33.129.189", "testfinger", PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
+            pipeCliente.Connect();
+
+            ComunicacionStream cS = new ComunicacionStream(pipeCliente);
+            if(cS.leeCadena() == "Conectado al servidor"){
+                cS.enviaImagen(huella);
+
+                if(cS.leeCadena() == "IDENTIFICADO"){
+                    string nombreUsuario = cS.leeCadena();
+                    pictureBox1.BackColor = Color.Green;
+                }
+                else{
+                    //ERROR IDENTIFICACION
+                    pictureBox1.BackColor = Color.Yellow;
+                }
+            }else{
+                //ERROR CONEXION SERVIDOR
+                pictureBox1.BackColor = Color.Red;
+            }
+            pipeCliente.Close();
         }
 
         private void botonCerrar_Click(object sender, EventArgs e)

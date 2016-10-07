@@ -117,7 +117,7 @@
             this.comparaHuella.TabIndex = 1;
             this.comparaHuella.Text = "Comparar huella";
             this.comparaHuella.UseVisualStyleBackColor = true;
-            this.comparaHuella.Click += new System.EventHandler(this.botonFondo_Click);
+            this.comparaHuella.Click += new System.EventHandler(this.comparaHuella_Click);
             // 
             // botonBorrar
             // 

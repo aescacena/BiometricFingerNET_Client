@@ -15,8 +15,6 @@ namespace FingerClient
 {
     static class Program
     {
-        private static int numClients = 1;
-
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -24,22 +22,57 @@ namespace FingerClient
         static void Main()
         {
 
-            Thread[] server = new Thread[numClients];
+            /*Thread[] server = new Thread[numClients];
             for (int i = 0; i < numClients; i++)
             {
                 server[i] = new Thread(conexion);
                 server[i].Start();
             }
-            Thread.Sleep(250);
+            Thread.Sleep(250);*/
 
-            /*Application.EnableVisualStyles();
+            Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());*/
+            Application.Run(new Form1());
+
+            Client client = new Client();
+            client.OnDataReceived += new ClientHandlePacketData(client_OnDataReceived);
+            client.ConnectToServer("161.33.129.189", 8888);
+
+            ASCIIEncoding encoder = new ASCIIEncoding();
+
+            string s = "test";
+
+            while (true)
+            {
+                //string s = Console.ReadLine();
+
+                if (s != null)
+                {
+                    //If the user types exit, then exit
+                    if ("exit".Equals(s))
+                    {
+                        break;
+                    }
+
+                    client.SendImmediate(Encoding.ASCII.GetBytes(s));
+                    s = null;
+                }
+            }
+
+            client.Disconnect();
+            Environment.Exit(0);
+        }
+
+        static void client_OnDataReceived(byte[] data, int bytesRead)
+        {
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            string message = encoder.GetString(data, 0, bytesRead);
+            Console.WriteLine("Received a message: " + message);
         }
 
         private static void conexion()
         {
-            NamedPipeClientStream pipeClient = new NamedPipeClientStream(".", "testfinger", PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
+            NamedPipeClientStream pipeClient = new NamedPipeClientStream("161.33.129.189", "testfinger", PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.None);
 
             Console.WriteLine("\nConectando con el servidor...");
             pipeClient.Connect();
@@ -48,7 +81,7 @@ namespace FingerClient
             // Validate the server's signature string
             if (cS.leeCadena() == "Conectado al servidor"){
                 // El token de seguridad del cliente se envía con la primera escritura.
-                cS.enviaImagen(Image.FromFile(@"C:\Users\PC_STE_19\Documents\Visual Studio 2015\Projects\BiometricFinger\alterImages\020_2_2_muchas_lineas.jpg", true));
+                //cS.enviaImagen(Image.FromFile(@"C:\Users\PC_STE_19\Documents\Visual Studio 2015\Projects\BiometricFinger\alterImages\020_2_2_muchas_lineas.jpg", true);)
 
                 if(cS.leeCadena() == "IDENTIFICADO")
                 {
