@@ -9,3 +9,14 @@ C:\Users\PC_STE_19\documents\visual studio 2015\Projects\fingerClient\FingerClie
 C:\Users\PC_STE_19\documents\visual studio 2015\Projects\fingerClient\FingerClient\obj\Debug\FingerClient.Form1.resources
 C:\Users\PC_STE_19\documents\visual studio 2015\Projects\fingerClient\FingerClient\bin\Debug\SourceAFIS.dll
 C:\Users\PC_STE_19\documents\visual studio 2015\Projects\fingerClient\FingerClient\bin\Debug\SourceAFIS.xml
+C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFingerNET_Client\FingerClient\bin\Debug\FingerClient.exe.config
+C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFingerNET_Client\FingerClient\obj\Debug\FingerClient.exe
+C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFingerNET_Client\FingerClient\obj\Debug\FingerClient.pdb
+C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFingerNET_Client\FingerClient\bin\Debug\FingerClient.exe
+C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFingerNET_Client\FingerClient\bin\Debug\FingerClient.pdb
+C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFingerNET_Client\FingerClient\bin\Debug\SourceAFIS.dll
+C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFingerNET_Client\FingerClient\bin\Debug\SourceAFIS.xml
+C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFingerNET_Client\FingerClient\obj\Debug\FingerClient.csprojResolveAssemblyReference.cache
+C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFingerNET_Client\FingerClient\obj\Debug\FingerClient.Form1.resources
+C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFingerNET_Client\FingerClient\obj\Debug\FingerClient.Properties.Resources.resources
+C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFingerNET_Client\FingerClient\obj\Debug\FingerClient.csproj.GenerateResource.Cache

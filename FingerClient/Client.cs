@@ -131,8 +131,15 @@ namespace FingerClient
         /// <param name="data"></param>
         public void SendImmediate(byte[] data)
         {
+            /*
             AddToPacket(data);
-            FlushData();
+            FlushData();*/
+
+            clientStream.WriteByte((byte)(data.Length / 256));
+            clientStream.WriteByte((byte)(data.Length & 255));
+            clientStream.Write(data, 0, data.Length);
+            clientStream.Flush();
+            buffer.CurrentWriteByteCount = 0;
         }
 
         /// <summary>

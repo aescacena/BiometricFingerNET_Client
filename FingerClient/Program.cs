@@ -36,7 +36,8 @@ namespace FingerClient
 
             Client client = new Client();
             client.OnDataReceived += new ClientHandlePacketData(client_OnDataReceived);
-            client.ConnectToServer("161.33.129.189", 8888);
+            //client.ConnectToServer("161.33.129.189", 8888);
+            client.ConnectToServer("192.168.1.137", 8888);
 
             ASCIIEncoding encoder = new ASCIIEncoding();
 
@@ -54,7 +55,23 @@ namespace FingerClient
                         break;
                     }
 
-                    client.SendImmediate(Encoding.ASCII.GetBytes(s));
+                    //client.SendImmediate(Encoding.ASCII.GetBytes(s));
+
+                    byte[] imageData;
+                    using (var ms = new MemoryStream())
+                    {
+                        Image image = Image.FromFile(@"C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFinger\alterImages\020_2_2_muchas_lineas.jpg", true);
+                        image.Save(ms, ImageFormat.Jpeg);
+                        imageData = ms.ToArray();
+                    }
+
+                    //byte[] outBuffer = streamEncoding.GetBytes(outString);
+                    int len = imageData.Length;
+                    if (len > UInt16.MaxValue)
+                    {
+                        len = (int)UInt16.MaxValue;
+                    }
+                    client.SendImmediate(imageData);
                     s = null;
                 }
             }
