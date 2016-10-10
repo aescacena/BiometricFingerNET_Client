@@ -34,18 +34,18 @@ namespace FingerClient
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
 
-            Client client = new Client();
-            client.OnDataReceived += new ClientHandlePacketData(client_OnDataReceived);
-            //client.ConnectToServer("161.33.129.189", 8888);
-            client.ConnectToServer("192.168.1.137", 8888);
+            //Client client = new Client();
+            //client.OnDataReceived += new ClientHandlePacketData(client_OnDataReceived);
+            //client.ConnectToServer("161.33.129.193", 8888);
+            //client.ConnectToServer("192.168.1.137", 8888);
 
             ASCIIEncoding encoder = new ASCIIEncoding();
 
-            string s = "test";
+            //string s = "test";
 
-            while (true)
+            /*while (true)
             {
-                //string s = Console.ReadLine();
+                string s = Console.ReadLine();
 
                 if (s != null)
                 {
@@ -60,7 +60,8 @@ namespace FingerClient
                     byte[] imageData;
                     using (var ms = new MemoryStream())
                     {
-                        Image image = Image.FromFile(@"C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFinger\alterImages\020_2_2_muchas_lineas.jpg", true);
+                        //Image image = Image.FromFile(@"C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFinger\alterImages\020_2_2_muchas_lineas.jpg", true);
+                        Image image = Image.FromFile(@"C:\Users\PC_STE_19\Documents\Visual Studio 2015\Projects\BiometricFinger\alterImages\020_2_2_muchas_lineas.jpg", true);
                         image.Save(ms, ImageFormat.Jpeg);
                         imageData = ms.ToArray();
                     }
@@ -77,7 +78,7 @@ namespace FingerClient
             }
 
             client.Disconnect();
-            Environment.Exit(0);
+            Environment.Exit(0);*/
         }
 
         static void client_OnDataReceived(byte[] data, int bytesRead)

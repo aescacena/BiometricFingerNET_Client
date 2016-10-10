@@ -15,6 +15,7 @@ namespace FingerClient
     public partial class Form1 : Form
     {
         public Image huella = null;
+        Client client = null;
 
         public Form1()
         {
@@ -50,31 +51,39 @@ namespace FingerClient
             /*if (colorDialog1.ShowDialog() == DialogResult.OK)
                 pictureBox1.BackColor = colorDialog1.Color;*/
 
-            NamedPipeClientStream pipeCliente = new NamedPipeClientStream("161.33.129.189", "testfinger", PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
-            pipeCliente.Connect();
+            client = new Client();
+            client.setHuella(huella);
+            client.ConnectToServer("161.33.129.193", 8888);
 
-            ComunicacionStream cS = new ComunicacionStream(pipeCliente);
-            if(cS.leeCadena() == "Conectado al servidor"){
-                cS.enviaImagen(huella);
+            if (!client.IsConnected())
+            {
+                //ERROR CONEXION SERVIDOR
+                pictureBox1.BackColor = Color.Red;
+            }else
+            {
+                int count = 0;
+                while (client.estadoHuella == 0)
+                {
+                    count++;
+                }
 
-                if(cS.leeCadena() == "IDENTIFICADO"){
-                    string nombreUsuario = cS.leeCadena();
+                if(client.estadoHuella == 1)
+                {
+                    //IDENTIFICACION
                     pictureBox1.BackColor = Color.Green;
                 }
-                else{
+                if(client.estadoHuella == -1)
+                {
                     //ERROR IDENTIFICACION
                     pictureBox1.BackColor = Color.Yellow;
                 }
-            }else{
-                //ERROR CONEXION SERVIDOR
-                pictureBox1.BackColor = Color.Red;
             }
-            pipeCliente.Close();
         }
 
         private void botonCerrar_Click(object sender, EventArgs e)
         {
             //Cierra el formulario
+            client.Disconnect();
             this.Close();
         }
 

@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +22,7 @@ namespace FingerClient
             this.ioStream = ioStream;
             streamEncoding = new UnicodeEncoding();
         }
+
         /// <summary>
         /// Cadena String en Stream
         /// </summary>
@@ -50,6 +53,7 @@ namespace FingerClient
             len += ioStream.ReadByte();
             byte[] inBuffer = new byte[len];
             ioStream.Read(inBuffer, 0, len);
+            ioStream.Flush();
 
             return streamEncoding.GetString(inBuffer);
         }
@@ -104,6 +108,43 @@ namespace FingerClient
             ioStream.Flush();
 
             return 1;
+        }
+
+        public int enviaUsuario(Usuario usuario)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            try
+            {
+                formatter.Serialize(ioStream, usuario);
+                ioStream.Flush();
+            }
+            catch (SerializationException e)
+            {
+                Console.WriteLine("Error al realizar la Serialización de Usuario");
+            }
+
+            return 1;
+        }
+
+        public Usuario recibeUsuario()
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            Usuario usuario = null;
+            try
+            {
+                usuario = (Usuario)formatter.Deserialize(ioStream);
+                ioStream.Flush();
+            }
+            catch (SerializationException e)
+            {
+                Console.WriteLine("Error al realizar la Deserialización de Usuario");
+            }
+
+            return usuario;
+        }
+        public void limpiar()
+        {
+            ioStream.Flush();
         }
     }
 }

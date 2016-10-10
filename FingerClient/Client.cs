@@ -5,6 +5,9 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 
 namespace FingerClient
 {
@@ -16,8 +19,6 @@ namespace FingerClient
     /// </summary>
     public class Client
     {
-        public event ClientHandlePacketData OnDataReceived;
-
         private TcpClient tcpClient;
         private NetworkStream clientStream;
         private NetworkBuffer buffer;
@@ -25,12 +26,14 @@ namespace FingerClient
         private int readBufferSize = 1024;
         private int port;
         private bool started = false;
+        public int estadoHuella = 0;
 
         /// <summary>
         /// Constructs a new client
         /// </summary>
         public Client()
         {
+            estadoHuella = 0;
             buffer = new NetworkBuffer();
             buffer.WriteBuffer = new byte[writeBufferSize];
             buffer.ReadBuffer = new byte[readBufferSize];
@@ -63,35 +66,79 @@ namespace FingerClient
         private void ListenForPackets()
         {
             int bytesRead;
-            int tipo = 1;
-
+            string estado = "INICIAL";
+            ComunicacionStream cS = new ComunicacionStream(tcpClient.GetStream());
             while (started)
             {
                 bytesRead = 0;
 
                 try
                 {
-                    //Blocks until a message is received from the server
-                    bytesRead = clientStream.Read(buffer.ReadBuffer, 0, readBufferSize);
+                    switch (estado)
+                    {
+                        case "INICIAL":
+                            //bloquea hasta que un cliente envía imagen de dedo
+                            Console.WriteLine("Envia imagen de huella dactilar");
+                            cS.enviaCadena("VERIFICA_HUELLA");
+                            using (var ms = new MemoryStream())
+                            {
+                                //Image image = Image.FromFile(@"C:\Users\PC_STE_19\Documents\Visual Studio 2015\Projects\BiometricFinger\alterImages\020_2_2_muchas_lineas.jpg", true);
+                                Image image = buffer.huella;
+                                image.Save(ms, ImageFormat.Jpeg);
+                                cS.enviaImagen(image);
+                            }
+                            estado = "RECIBE_USUARIO";
+                            break;
+                        case "RECIBE_USUARIO":
+                            //bloquea hasta que un cliente envía imagen de dedo
+                            Console.WriteLine("Recibe usuario correspondiente a la huella dactilar");
+                            //Usuario usuario = cS.recibeUsuario();
+                            string sUsuario = cS.leeCadena();
+
+                            if (sUsuario == "NO VERIFICADO")
+                            {
+                                estadoHuella = -1;
+                                estado = "FIN";
+                            }
+                            else
+                            {
+                                estadoHuella = 1;
+                                estado = "ENVIA_OPERACION";
+                            }
+                            Console.WriteLine(sUsuario);
+                            break;
+                        case "ENVIA_OPERACION":
+                            cS.enviaCadena("RECIBE_OPERACION");
+                            //bloquea hasta que un cliente envía imagen de dedo
+                            Console.WriteLine("Recibe usuario correspondiente a la huella dactilar");
+                            cS.enviaCadena("ENTRADA");
+                            estado = "CONFIRMACION";
+                            break;
+                        case "CONFIRMACION":
+                            //bloquea hasta que un cliente envía imagen de dedo
+                            Console.WriteLine("Recibe usuario correspondiente a la huella dactilar");
+                            string confirmacion = cS.leeCadena();
+                            Console.WriteLine(confirmacion);
+                            estado = "FIN";
+                            break;
+                        case "FIN":
+                            cS.enviaCadena("FIN");
+                            started = false;
+                            break;
+                    }
                 }
                 catch
                 {
-                    //A socket error has occurred
-                    Console.WriteLine("A socket error has occurred with the client socket " + tcpClient.ToString());
+                    //Se ha producido un error de socket
+                    Console.WriteLine("Un error de socket ha ocurrido con el cliente: " + tcpClient.ToString());
                     break;
                 }
 
-                if (bytesRead == 0)
+                /*if (bytesRead == 0)
                 {
                     //The server has disconnected
                     break;
-                }
-
-                if (OnDataReceived != null)
-                {
-                    //Send off the data for other classes to handle
-                    OnDataReceived(buffer.ReadBuffer, bytesRead);
-                }
+                }*/
 
                 Thread.Sleep(15);
             }
@@ -166,6 +213,11 @@ namespace FingerClient
             tcpClient.Close();
 
             started = false;
+        }
+
+        public void setHuella(Image huella)
+        {
+            buffer.huella = huella;
         }
     }
 }
