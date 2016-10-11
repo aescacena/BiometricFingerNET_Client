@@ -14,8 +14,8 @@ namespace FingerClient
     public delegate void ClientHandlePacketData(byte[] data, int bytesRead);
 
     /// <summary>
-    /// Implements a simple TCP client which connects to a specified server and
-    /// raises C# events when data is received from the server
+    /// Implementación de un cliente TCP el cual se conecta a un servidor específico 
+    /// y plantea acontecimientos cuando se reciben datos desde el servidor
     /// </summary>
     public class Client
     {
@@ -29,7 +29,7 @@ namespace FingerClient
         public int estadoHuella = 0;
 
         /// <summary>
-        /// Constructs a new client
+        /// Construye un nuevo cliente
         /// </summary>
         public Client()
         {
@@ -41,10 +41,10 @@ namespace FingerClient
         }
 
         /// <summary>
-        /// Initiates a TCP connection to a TCP server with a given address and port
+        /// Inicializa un cliente TCP a un servidor TCP con los parámetros de IP y Puerto recibidos
         /// </summary>
-        /// <param name="ipAddress">The IP address (IPV4) of the server</param>
-        /// <param name="port">The port the server is listening on</param>
+        /// <param name="ipAddress">Dirección IP (IPV4) del servidor</param>
+        /// <param name="port">Puerto de escucha del servidor</param>
         public void ConnectToServer(string ipAddress, int port)
         {
             this.port = port;
@@ -59,9 +59,8 @@ namespace FingerClient
         }
 
         /// <summary>
-        /// This method runs on its own thread, and is responsible for
-        /// receiving data from the server and raising an event when data
-        /// is received
+        /// Este método se ejecuta en su propio hilo, y es responsable de recibir 
+        /// datos desde el servidor.
         /// </summary>
         private void ListenForPackets()
         {
@@ -80,13 +79,8 @@ namespace FingerClient
                             //bloquea hasta que un cliente envía imagen de dedo
                             Console.WriteLine("Envia imagen de huella dactilar");
                             cS.enviaCadena("VERIFICA_HUELLA");
-                            using (var ms = new MemoryStream())
-                            {
-                                //Image image = Image.FromFile(@"C:\Users\PC_STE_19\Documents\Visual Studio 2015\Projects\BiometricFinger\alterImages\020_2_2_muchas_lineas.jpg", true);
-                                Image image = buffer.huella;
-                                image.Save(ms, ImageFormat.Jpeg);
-                                cS.enviaImagen(image);
-                            }
+                            Image image = buffer.huella;
+                            cS.enviaImagen(image);
                             estado = "RECIBE_USUARIO";
                             break;
                         case "RECIBE_USUARIO":
@@ -127,7 +121,7 @@ namespace FingerClient
                             break;
                     }
                 }
-                catch
+                catch (Exception e)
                 {
                     //Se ha producido un error de socket
                     Console.WriteLine("Un error de socket ha ocurrido con el cliente: " + tcpClient.ToString());
@@ -148,9 +142,9 @@ namespace FingerClient
         }
 
         /// <summary>
-        /// Adds data to the packet to be sent out, but does not send it across the network
+        /// Añade datos al paquete para ser enviado, pero no es enviado a la red
         /// </summary>
-        /// <param name="data">The data to be sent</param>
+        /// <param name="data">Datos para ser enviados</param>
         public void AddToPacket(byte[] data)
         {
             if (buffer.CurrentWriteByteCount + data.Length > buffer.WriteBuffer.Length)
@@ -163,7 +157,7 @@ namespace FingerClient
         }
 
         /// <summary>
-        /// Flushes all outgoing data to the server
+        /// Vacía y envía todos los datos salientes.
         /// </summary>
         public void FlushData()
         {
@@ -173,9 +167,9 @@ namespace FingerClient
         }
 
         /// <summary>
-        /// Sends the byte array data immediately to the server
+        /// Envia un array de bytes inmediatamente al servidor
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="data">Datos para enviar</param>
         public void SendImmediate(byte[] data)
         {
             /*
@@ -190,7 +184,7 @@ namespace FingerClient
         }
 
         /// <summary>
-        /// Tells whether we're connected to the server
+        /// Indica si estamos conectados
         /// </summary>
         /// <returns></returns>
         public bool IsConnected()
@@ -199,7 +193,7 @@ namespace FingerClient
         }
 
         /// <summary>
-        /// Disconnect from the server
+        /// Desconexión del servidor
         /// </summary>
         public void Disconnect()
         {
@@ -208,13 +202,16 @@ namespace FingerClient
                 return;
             }
 
-            Console.WriteLine("Disconnected from server");
+            Console.WriteLine("Desconexión del servidor");
 
             tcpClient.Close();
 
             started = false;
         }
-
+        /// <summary>
+        /// Recibe una imagen de huella dactilar
+        /// </summary>
+        /// <param name="data">Imagen de huella</param>
         public void setHuella(Image huella)
         {
             buffer.huella = huella;

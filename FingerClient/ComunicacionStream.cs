@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
@@ -108,6 +109,17 @@ namespace FingerClient
             ioStream.Flush();
 
             return 1;
+
+            /*byte[] imageData;
+            using (var ms = new MemoryStream())
+            {
+                image.Save(ms, ImageFormat.Jpeg);
+                imageData = ms.GetBuffer();
+                ms.Close();
+            }
+            BinaryWriter br = new BinaryWriter(tcpClient.GetStream());
+            br.Write(imageData);
+            br.Close();*/
         }
 
         public int enviaUsuario(Usuario usuario)
