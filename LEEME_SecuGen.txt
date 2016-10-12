@@ -1,0 +1,22 @@
+Fecha: 12/10/2016
+Autor: Antonio Escacena
+Titulo: Inicio programa para lector de dedo en C#
+Programas: Visual Studio 2015
+----------------------
+Problemas encontrados:
+----------------------
+	1. Error librería "Secugen.FDxSDKPro.Windows":
+	..............................................
+		Al acceder a sus recursos esta lanza una excepción la cual es: {"El ensamblado de modo 
+		mixto se ha compilado con la versión 'v2.0.50727' del runtime y no se puede cargar en 
+		el runtime 4.0 sin información de configuración adicional.":null}
+		
+		* Causa: La librería está compilada en .NET v2.0 y estamos desarrollando la aplicación 
+		  en .NET v4.0
+
+		* Solución: Editar fichero de configuración App.config añadiendo:
+		<configuration>
+    			<startup useLegacyV2RuntimeActivationPolicy="true"> 
+        			<supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5.2" />
+    			</startup>
+		</configuration>
