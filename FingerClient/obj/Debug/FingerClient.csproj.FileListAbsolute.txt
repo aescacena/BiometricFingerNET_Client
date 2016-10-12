@@ -20,3 +20,4 @@ C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFingerNE
 C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFingerNET_Client\FingerClient\obj\Debug\FingerClient.Form1.resources
 C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFingerNET_Client\FingerClient\obj\Debug\FingerClient.Properties.Resources.resources
 C:\Users\aesca\OneDrive\documentos\visual studio 2015\Projects\BiometricFingerNET_Client\FingerClient\obj\Debug\FingerClient.csproj.GenerateResource.Cache
+C:\Users\aesca\OneDrive\Documentos\Visual Studio 2015\Projects\BiometricFingerNET_Client\FingerClient\bin\Debug\SecuGen.FDxSDKPro.Windows.dll
