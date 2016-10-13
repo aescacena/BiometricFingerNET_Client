@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SecuGen.FDxSDKPro.Windows">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\SecuGen\FDx SDK Pro for Windows\DotNET\Bin\i386\SecuGen.FDxSDKPro.Windows.dll</HintPath>
+    </Reference>
     <Reference Include="SourceAFIS, Version=1.7.0.41358, Culture=neutral, PublicKeyToken=b195ffd29617dfb3, processorArchitecture=MSIL">
       <HintPath>..\packages\SourceAFIS.1.7\lib\net451\SourceAFIS.dll</HintPath>
       <Private>True</Private>
