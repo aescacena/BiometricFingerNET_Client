@@ -24,6 +24,12 @@ namespace FingerClient
         private Int32 m_ImageWidth;
         private Int32 m_ImageHeight;
 
+        private Int32 iError;
+        private SGFPMDeviceName device_name;
+        private Int32 device_id;
+        private Int32 elap_time;
+        private  Byte[] fp_image;
+
         public Form1()
         {
             m_FPM = new SGFingerPrintManager();
@@ -37,10 +43,6 @@ namespace FingerClient
 
         private void botonMostrar_Click(object sender, EventArgs e)
         {
-
-            //if (m_FPM.NumberOfDevice == 0)
-            //    return;
-
             Int32 iError;
             SGFPMDeviceName device_name;
             Int32 device_id;
@@ -109,15 +111,10 @@ namespace FingerClient
 
         private void comparaHuella_Click(object sender, EventArgs e)
         {
-            //Muestra el color del dialogo. Si el usuario hace click en OK,
-            //cambia PictureBox al color que el suario a seleccionado.
-            /*if (colorDialog1.ShowDialog() == DialogResult.OK)
-                pictureBox1.BackColor = colorDialog1.Color;*/
-
             client = new Client();
             client.setHuella(huella);
-            //client.ConnectToServer("161.33.129.193", 8888);
-            client.ConnectToServer("192.168.1.137", 8888);
+            client.ConnectToServer("161.33.129.182", 8888);
+            //client.ConnectToServer("192.168.1.137", 8888);
 
             if (!client.IsConnected())
             {
@@ -151,17 +148,110 @@ namespace FingerClient
             this.Close();
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox1.Checked)
-                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            else
-                pictureBox1.SizeMode = PictureBoxSizeMode.Normal;
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void Guardar_Click(object sender, EventArgs e)
+        {
+            huella.Save("c:\\imagenSecugen.jpg");
+        }
+
+        private void Inicializa_Click(object sender, EventArgs e)
+        {
+            device_name = SGFPMDeviceName.DEV_FDU05;
+            device_id = (Int32)(SGFPMPortAddr.USB_AUTO_DETECT);
+
+            iError = m_FPM.Init(device_name);
+            iError = m_FPM.OpenDevice(device_id);
+
+            m_FPM.EnableAutoOnEvent(true, (int)this.Handle);
+
+
+            SGFPMDeviceInfoParam pInfo = new SGFPMDeviceInfoParam();
+            iError = m_FPM.GetDeviceInfo(pInfo);
+            m_ImageWidth = pInfo.ImageWidth;
+            m_ImageHeight = pInfo.ImageHeight;
+            fp_image = new Byte[m_ImageWidth * m_ImageHeight];
+
+            if (iError == (Int32)SGFPMError.ERROR_NONE)
+                Console.WriteLine("Initialization Success");
+            else
+                Console.WriteLine("OpenDevice()", iError);
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if(m.Msg == (int)SGFPMMessages.DEV_AUTOONEVENT)
+            {
+                if (m.WParam.ToInt32() == (Int32)SGFPMAutoOnEvent.FINGER_ON)
+                {
+                    Console.WriteLine("Lector de huella ON");
+                    muestraHuella();
+                }
+                else if (m.WParam.ToInt32() == (Int32)SGFPMAutoOnEvent.FINGER_OFF)
+                    Console.WriteLine("Lector de huella OFF");
+            }
+            
+            base.WndProc(ref m);
+        }
+
+        private void muestraHuella()
+        {
+            /*Int32 iError;
+            SGFPMDeviceName device_name;
+            Int32 device_id;
+            Int32 elap_time;
+
+            Byte[] fp_image;
+
+            device_name = SGFPMDeviceName.DEV_FDU05;
+            device_id = (Int32)(SGFPMPortAddr.USB_AUTO_DETECT);
+
+            iError = m_FPM.Init(device_name);
+            iError = m_FPM.OpenDevice(device_id);
+
+            SGFPMDeviceInfoParam pInfo = new SGFPMDeviceInfoParam();
+            iError = m_FPM.GetDeviceInfo(pInfo);
+            m_ImageWidth = pInfo.ImageWidth;
+            m_ImageHeight = pInfo.ImageHeight;*/
+
+            
+            elap_time = Environment.TickCount;
+
+            iError = m_FPM.GetImage(fp_image);
+
+            if (iError == (Int32)SGFPMError.ERROR_NONE)
+            {
+                elap_time = Environment.TickCount - elap_time;
+                Console.WriteLine("Capture Time : " + elap_time + " ms");
+            }
+            else
+                Console.WriteLine("OpenDevice()", iError);
+
+            int colorval;
+            Bitmap bmp = new Bitmap(m_ImageWidth, m_ImageHeight);
+            pictureBox1.Image = (Image)bmp;
+            huella = pictureBox1.Image;
+
+            for (int i = 0; i < bmp.Width; i++)
+            {
+                for (int j = 0; j < bmp.Height; j++)
+                {
+                    colorval = (int)fp_image[(j * m_ImageWidth) + i];
+                    bmp.SetPixel(i, j, Color.FromArgb(colorval, colorval, colorval));
+                }
+            }
+
+            // Muestra el cuadro de diálogo Abrir archivo. Si el usuario hace clic en OK, cargua la 
+            // imagen que el usuario elije.
+            //if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            // {
+            //     pictureBox1.Load(openFileDialog1.FileName);
+            //     huella = pictureBox1.Image;
+            // }
+            pictureBox1.Refresh();
         }
     }
 }
