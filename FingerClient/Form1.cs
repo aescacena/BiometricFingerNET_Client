@@ -16,7 +16,7 @@ namespace FingerClient
     public partial class Form1 : Form
     {
         public Image huella = null;
-        Client client = null;
+        Client cliente = null;
 
         private SGFingerPrintManager m_FPM;
 
@@ -25,9 +25,9 @@ namespace FingerClient
         private Int32 m_ImageHeight;
 
         private Int32 iError;
-        private SGFPMDeviceName device_name;
-        private Int32 device_id;
-        private Int32 elap_time;
+        private SGFPMDeviceName nombreDispositivo;
+        private Int32 dispositivoID;
+        private Int32 tiempo;
         private  Byte[] fp_image;
 
         public Form1()
@@ -41,6 +41,10 @@ namespace FingerClient
 
         }
 
+        /// <summary>
+        /// Realiza la inicialización básica del dispositivo, la 
+        /// lectura de la huella dactilar y la muestra en la aplicación
+        /// </summary>
         private void botonMostrar_Click(object sender, EventArgs e)
         {
             Int32 iError;
@@ -65,7 +69,7 @@ namespace FingerClient
             fp_image = new Byte[m_ImageWidth * m_ImageHeight];
 
             if (iError == (Int32)SGFPMError.ERROR_NONE)
-                Console.WriteLine("Initialization Success");
+                Console.WriteLine("Inicialización correcta");
             else
                 Console.WriteLine("OpenDevice()", iError);
 
@@ -74,7 +78,7 @@ namespace FingerClient
             if (iError == (Int32)SGFPMError.ERROR_NONE)
             { 
                 elap_time = Environment.TickCount - elap_time;
-                Console.WriteLine("Capture Time : " + elap_time + " ms");
+                Console.WriteLine("Tiempo de captura: " + elap_time + " ms");
             }
             else
                 Console.WriteLine("OpenDevice()", iError);
@@ -109,31 +113,34 @@ namespace FingerClient
             pictureBox1.Image = null;
         }
 
+        /// <summary>
+        /// Construye un nuevo cliente TCP que se conecta a la IP y puerto dado
+        /// </summary>
         private void comparaHuella_Click(object sender, EventArgs e)
         {
-            client = new Client();
-            client.setHuella(huella);
-            client.ConnectToServer("161.33.129.182", 8888);
+            cliente = new Client();
+            cliente.setHuella(huella);
+            cliente.ConnectToServer("161.33.129.182", 8888);
             //client.ConnectToServer("192.168.1.137", 8888);
 
-            if (!client.IsConnected())
+            if (!cliente.IsConnected())
             {
                 //ERROR CONEXION SERVIDOR
                 pictureBox1.BackColor = Color.Red;
             }else
             {
                 int count = 0;
-                while (client.estadoHuella == 0)
+                while (cliente.estadoHuella == 0)
                 {
                     count++;
                 }
 
-                if(client.estadoHuella == 1)
+                if(cliente.estadoHuella == 1)
                 {
                     //IDENTIFICACION
                     pictureBox1.BackColor = Color.Green;
                 }
-                if(client.estadoHuella == -1)
+                if(cliente.estadoHuella == -1)
                 {
                     //ERROR IDENTIFICACION
                     pictureBox1.BackColor = Color.Yellow;
@@ -141,10 +148,13 @@ namespace FingerClient
             }
         }
 
+        /// <summary>
+        /// Elimina un cliente determinado de nuestra lista de clientes
+        /// </summary>
         private void botonCerrar_Click(object sender, EventArgs e)
         {
             //Cierra el formulario
-            client.Disconnect();
+            cliente.Disconnect();
             this.Close();
         }
 
@@ -158,13 +168,18 @@ namespace FingerClient
             huella.Save("c:\\imagenSecugen.jpg");
         }
 
+        /// <summary>
+        /// Realiza la inicialización básica del dispositivo lector de huella y
+        /// para detectar automáticamente la lectura de la huella dactilar.
+        /// </summary>
+        /// <param name="client"></param>
         private void Inicializa_Click(object sender, EventArgs e)
         {
-            device_name = SGFPMDeviceName.DEV_FDU05;
-            device_id = (Int32)(SGFPMPortAddr.USB_AUTO_DETECT);
+            nombreDispositivo = SGFPMDeviceName.DEV_FDU05;
+            dispositivoID = (Int32)(SGFPMPortAddr.USB_AUTO_DETECT);
 
-            iError = m_FPM.Init(device_name);
-            iError = m_FPM.OpenDevice(device_id);
+            iError = m_FPM.Init(nombreDispositivo);
+            iError = m_FPM.OpenDevice(dispositivoID);
 
             m_FPM.EnableAutoOnEvent(true, (int)this.Handle);
 
@@ -176,11 +191,17 @@ namespace FingerClient
             fp_image = new Byte[m_ImageWidth * m_ImageHeight];
 
             if (iError == (Int32)SGFPMError.ERROR_NONE)
-                Console.WriteLine("Initialization Success");
+                Console.WriteLine("Inicialización correcta");
             else
                 Console.WriteLine("OpenDevice()", iError);
         }
 
+        /// <summary>
+        /// Función llamada cuando el lector de huella detecta una lectura de
+        /// huella dactilar, esta función muestra en la aplicacion la imagen 
+        /// de la misma.
+        /// </summary>
+        /// <param name="m">Mensaje de estado recibido del lector de huella</param>
         protected override void WndProc(ref Message m)
         {
             if(m.Msg == (int)SGFPMMessages.DEV_AUTOONEVENT)
@@ -197,35 +218,19 @@ namespace FingerClient
             base.WndProc(ref m);
         }
 
+        /// <summary>
+        /// Realiza la lectura de la huella dactilar y la muestra en la aplicación
+        /// </summary>
         private void muestraHuella()
         {
-            /*Int32 iError;
-            SGFPMDeviceName device_name;
-            Int32 device_id;
-            Int32 elap_time;
-
-            Byte[] fp_image;
-
-            device_name = SGFPMDeviceName.DEV_FDU05;
-            device_id = (Int32)(SGFPMPortAddr.USB_AUTO_DETECT);
-
-            iError = m_FPM.Init(device_name);
-            iError = m_FPM.OpenDevice(device_id);
-
-            SGFPMDeviceInfoParam pInfo = new SGFPMDeviceInfoParam();
-            iError = m_FPM.GetDeviceInfo(pInfo);
-            m_ImageWidth = pInfo.ImageWidth;
-            m_ImageHeight = pInfo.ImageHeight;*/
-
-            
-            elap_time = Environment.TickCount;
+            tiempo = Environment.TickCount;
 
             iError = m_FPM.GetImage(fp_image);
 
             if (iError == (Int32)SGFPMError.ERROR_NONE)
             {
-                elap_time = Environment.TickCount - elap_time;
-                Console.WriteLine("Capture Time : " + elap_time + " ms");
+                tiempo = Environment.TickCount - tiempo;
+                Console.WriteLine("Tiempo de captura: " + tiempo + " ms");
             }
             else
                 Console.WriteLine("OpenDevice()", iError);
