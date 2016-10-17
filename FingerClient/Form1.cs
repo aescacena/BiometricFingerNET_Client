@@ -120,8 +120,8 @@ namespace FingerClient
         {
             cliente = new Client();
             cliente.setHuella(huella);
-            cliente.ConnectToServer("161.33.129.182", 8888);
-            //client.ConnectToServer("192.168.1.137", 8888);
+            //cliente.ConnectToServer("161.33.129.182", 8888);
+            cliente.ConnectToServer("192.168.1.137", 8888);
 
             if (!cliente.IsConnected())
             {
@@ -191,9 +191,13 @@ namespace FingerClient
             fp_image = new Byte[m_ImageWidth * m_ImageHeight];
 
             if (iError == (Int32)SGFPMError.ERROR_NONE)
-                Console.WriteLine("Inicialización correcta");
+                mensajeEmergente("Lector "+ nombreDispositivo+ " inicializado", "Inicializado", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
-                Console.WriteLine("OpenDevice()", iError);
+                mensajeEmergente("Error al inicializar lector de huella", "Error "+ iError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        void mensajeEmergente(string texto, string titulo, MessageBoxButtons tipoBoton, MessageBoxIcon tipoIcono) {
+            MessageBox.Show(texto, titulo, tipoBoton, tipoIcono);
         }
 
         /// <summary>
