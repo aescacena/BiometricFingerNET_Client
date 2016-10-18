@@ -118,6 +118,7 @@ namespace FingerClient
         /// </summary>
         private void comparaHuella_Click(object sender, EventArgs e)
         {
+            Int32 tiempoRetardo = Environment.TickCount;
             cliente = new Client();
             cliente.setHuella(huella);
             cliente.ConnectToServer("161.33.129.184", 8888);
@@ -134,18 +135,18 @@ namespace FingerClient
                 {
                     count++;
                 }
-
-                if(cliente.estadoHuella == 1)
+                tiempoRetardo = Environment.TickCount - tiempoRetardo;
+                if (cliente.estadoHuella == 1)
                 {
                     //IDENTIFICACION
                     pictureBox1.BackColor = Color.Green;
-                    mensajeEmergente(cliente.sUsuario, "Identificado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    mensajeEmergente(cliente.sUsuario + ", Tiempo: " + tiempoRetardo + " ms", "Identificado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 if(cliente.estadoHuella == -1)
                 {
                     //ERROR IDENTIFICACION
                     pictureBox1.BackColor = Color.Yellow;
-                    mensajeEmergente("No identificado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    mensajeEmergente("No identificado, Tiempo: " + tiempoRetardo + " ms", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
         }
