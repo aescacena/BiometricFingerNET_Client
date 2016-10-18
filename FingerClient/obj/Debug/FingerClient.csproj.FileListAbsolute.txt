@@ -29,3 +29,10 @@ C:\Users\PC_STE_19\Documents\Visual Studio 2015\Projects\FingerClient\FingerClie
 C:\Users\PC_STE_19\Documents\Visual Studio 2015\Projects\FingerClient\FingerClient\bin\Debug\FingerClient.application
 C:\Users\PC_STE_19\Documents\Visual Studio 2015\Projects\FingerClient\FingerClient\obj\Debug\FingerClient.exe.manifest
 C:\Users\PC_STE_19\Documents\Visual Studio 2015\Projects\FingerClient\FingerClient\obj\Debug\FingerClient.application
+C:\Users\aesca\OneDrive\Documentos\Visual Studio 2015\Projects\BiometricFingerNET_Client\FingerClient\bin\Debug\FingerClient.exe.manifest
+C:\Users\aesca\OneDrive\Documentos\Visual Studio 2015\Projects\BiometricFingerNET_Client\FingerClient\bin\Debug\FingerClient.application
+C:\Users\aesca\OneDrive\Documentos\Visual Studio 2015\Projects\BiometricFingerNET_Client\FingerClient\bin\Debug\MetroFramework.Design.dll
+C:\Users\aesca\OneDrive\Documentos\Visual Studio 2015\Projects\BiometricFingerNET_Client\FingerClient\bin\Debug\MetroFramework.dll
+C:\Users\aesca\OneDrive\Documentos\Visual Studio 2015\Projects\BiometricFingerNET_Client\FingerClient\bin\Debug\MetroFramework.Fonts.dll
+C:\Users\aesca\OneDrive\Documentos\Visual Studio 2015\Projects\BiometricFingerNET_Client\FingerClient\obj\Debug\FingerClient.exe.manifest
+C:\Users\aesca\OneDrive\Documentos\Visual Studio 2015\Projects\BiometricFingerNET_Client\FingerClient\obj\Debug\FingerClient.application

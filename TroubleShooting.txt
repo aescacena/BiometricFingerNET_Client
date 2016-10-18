@@ -24,5 +24,6 @@ Problemas encontrados:
 	</configuration>
 
 2. DESPLEGAR APLICACIÓN:
+........................
 	Para desplegar aplicación se necesita tener instalada la versión .NET
 	* Microsoft .NET Framework 4.5.2
