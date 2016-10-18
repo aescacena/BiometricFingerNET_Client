@@ -191,7 +191,7 @@ namespace FingerClient
             fp_image = new Byte[m_ImageWidth * m_ImageHeight];
 
             if (iError == (Int32)SGFPMError.ERROR_NONE)
-                mensajeEmergente("Lector "+ nombreDispositivo+ " inicializado", "Inicializado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                mensajeEmergente("Inicializado correctamente", "Inicializado", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
                 mensajeEmergente("Error al inicializar lector de huella", "Error "+ iError, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
