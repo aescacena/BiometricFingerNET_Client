@@ -32,7 +32,6 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.Inicializa = new System.Windows.Forms.Button();
-            this.botonMostrar = new System.Windows.Forms.Button();
             this.comparaHuella = new System.Windows.Forms.Button();
             this.Guardar = new System.Windows.Forms.Button();
             this.botonBorrar = new System.Windows.Forms.Button();
@@ -55,7 +54,6 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.Inicializa);
-            this.flowLayoutPanel1.Controls.Add(this.botonMostrar);
             this.flowLayoutPanel1.Controls.Add(this.comparaHuella);
             this.flowLayoutPanel1.Controls.Add(this.Guardar);
             this.flowLayoutPanel1.Controls.Add(this.botonBorrar);
@@ -76,21 +74,10 @@
             this.Inicializa.UseVisualStyleBackColor = true;
             this.Inicializa.Click += new System.EventHandler(this.Inicializa_Click);
             // 
-            // botonMostrar
-            // 
-            this.botonMostrar.AutoSize = true;
-            this.botonMostrar.Location = new System.Drawing.Point(84, 3);
-            this.botonMostrar.Name = "botonMostrar";
-            this.botonMostrar.Size = new System.Drawing.Size(110, 23);
-            this.botonMostrar.TabIndex = 3;
-            this.botonMostrar.Text = "Captura imagen";
-            this.botonMostrar.UseVisualStyleBackColor = true;
-            this.botonMostrar.Click += new System.EventHandler(this.botonMostrar_Click);
-            // 
             // comparaHuella
             // 
             this.comparaHuella.AutoSize = true;
-            this.comparaHuella.Location = new System.Drawing.Point(200, 3);
+            this.comparaHuella.Location = new System.Drawing.Point(84, 3);
             this.comparaHuella.Name = "comparaHuella";
             this.comparaHuella.Size = new System.Drawing.Size(138, 23);
             this.comparaHuella.TabIndex = 1;
@@ -100,7 +87,7 @@
             // 
             // Guardar
             // 
-            this.Guardar.Location = new System.Drawing.Point(344, 3);
+            this.Guardar.Location = new System.Drawing.Point(228, 3);
             this.Guardar.Name = "Guardar";
             this.Guardar.Size = new System.Drawing.Size(75, 23);
             this.Guardar.TabIndex = 4;
@@ -111,7 +98,7 @@
             // botonBorrar
             // 
             this.botonBorrar.AutoSize = true;
-            this.botonBorrar.Location = new System.Drawing.Point(425, 3);
+            this.botonBorrar.Location = new System.Drawing.Point(309, 3);
             this.botonBorrar.Name = "botonBorrar";
             this.botonBorrar.Size = new System.Drawing.Size(93, 23);
             this.botonBorrar.TabIndex = 2;
@@ -122,7 +109,7 @@
             // botonCerrar
             // 
             this.botonCerrar.AutoSize = true;
-            this.botonCerrar.Location = new System.Drawing.Point(524, 3);
+            this.botonCerrar.Location = new System.Drawing.Point(408, 3);
             this.botonCerrar.Name = "botonCerrar";
             this.botonCerrar.Size = new System.Drawing.Size(75, 23);
             this.botonCerrar.TabIndex = 0;
@@ -184,7 +171,6 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Button botonMostrar;
         private System.Windows.Forms.Button comparaHuella;
         private System.Windows.Forms.Button Guardar;
         private System.Windows.Forms.Button botonBorrar;

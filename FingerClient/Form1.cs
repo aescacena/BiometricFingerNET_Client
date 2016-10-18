@@ -41,76 +41,11 @@ namespace FingerClient
 
         }
 
-        /// <summary>
-        /// Realiza la inicialización básica del dispositivo, la 
-        /// lectura de la huella dactilar y la muestra en la aplicación
-        /// </summary>
-        private void botonMostrar_Click(object sender, EventArgs e)
-        {
-            Int32 iError;
-            SGFPMDeviceName device_name;
-            Int32 device_id;
-            Int32 elap_time;
-
-            Byte[] fp_image;
-
-            device_name = SGFPMDeviceName.DEV_FDU05;
-            device_id = (Int32)(SGFPMPortAddr.USB_AUTO_DETECT);
-
-            iError = m_FPM.Init(device_name);
-            iError = m_FPM.OpenDevice(device_id);
-
-            SGFPMDeviceInfoParam pInfo = new SGFPMDeviceInfoParam();
-            iError = m_FPM.GetDeviceInfo(pInfo);
-            m_ImageWidth = pInfo.ImageWidth;
-            m_ImageHeight = pInfo.ImageHeight;
-
-            elap_time = Environment.TickCount;
-            fp_image = new Byte[m_ImageWidth * m_ImageHeight];
-
-            if (iError == (Int32)SGFPMError.ERROR_NONE)
-                Console.WriteLine("Inicialización correcta");
-            else
-                Console.WriteLine("OpenDevice()", iError);
-
-            iError = m_FPM.GetImage(fp_image);
-
-            if (iError == (Int32)SGFPMError.ERROR_NONE)
-            { 
-                elap_time = Environment.TickCount - elap_time;
-                Console.WriteLine("Tiempo de captura: " + elap_time + " ms");
-            }
-            else
-                Console.WriteLine("OpenDevice()", iError);
-
-            int colorval;
-            Bitmap bmp = new Bitmap(m_ImageWidth, m_ImageHeight);
-            pictureBox1.Image = (Image)bmp;
-            huella = pictureBox1.Image;
-
-            for (int i = 0; i < bmp.Width; i++)
-            {
-                for (int j = 0; j < bmp.Height; j++)
-                {
-                    colorval = (int)fp_image[(j * m_ImageWidth) + i];
-                    bmp.SetPixel(i, j, Color.FromArgb(colorval, colorval, colorval));
-                }
-            }
-
-            // Muestra el cuadro de diálogo Abrir archivo. Si el usuario hace clic en OK, cargua la 
-            // imagen que el usuario elije.
-            //if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            // {
-            //     pictureBox1.Load(openFileDialog1.FileName);
-            //     huella = pictureBox1.Image;
-            // }
-            pictureBox1.Refresh();
-        }
-
         private void botonBorrar_Click(object sender, EventArgs e)
         {
             //Elimina la imagen
             pictureBox1.Image = null;
+            huella = null;
         }
 
         /// <summary>
@@ -118,36 +53,47 @@ namespace FingerClient
         /// </summary>
         private void comparaHuella_Click(object sender, EventArgs e)
         {
-            Int32 tiempoRetardo = Environment.TickCount;
-            cliente = new Client();
-            cliente.setHuella(huella);
-            cliente.ConnectToServer("161.33.129.184", 8888);
-            //cliente.ConnectToServer("192.168.1.137", 8888);
+            if(huella != null)
+            {
+                Int32 tiempoRetardo = Environment.TickCount;
+                cliente = new Client();
+                cliente.setHuella(huella);
+                cliente.ConnectToServer("161.33.129.211", 8888);
+                //cliente.ConnectToServer("192.168.1.137", 8888);
 
-            if (!cliente.IsConnected())
+                if (!cliente.IsConnected())
+                {
+                    //ERROR CONEXION SERVIDOR
+                    pictureBox1.BackColor = Color.Red;
+                }
+                else
+                {
+                    int count = 0;
+                    while (cliente.estadoHuella == 0)
+                    {
+                        count++;
+                    }
+                    tiempoRetardo = Environment.TickCount - tiempoRetardo;
+
+                    mensajeEmergente(cliente.lenImagen.ToString(), "MENSAJE DEBUG", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    if (cliente.estadoHuella == 1)
+                    {
+                        //IDENTIFICACION
+                        pictureBox1.BackColor = Color.Green;
+                        mensajeEmergente(cliente.sUsuario + ", Tiempo: " + tiempoRetardo + " ms", "Identificado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    if (cliente.estadoHuella == -1)
+                    {
+                        //ERROR IDENTIFICACION
+                        pictureBox1.BackColor = Color.Yellow;
+                        mensajeEmergente("No identificado, Tiempo: " + tiempoRetardo + " ms", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                }
+            }
+            else
             {
-                //ERROR CONEXION SERVIDOR
-                pictureBox1.BackColor = Color.Red;
-            }else
-            {
-                int count = 0;
-                while (cliente.estadoHuella == 0)
-                {
-                    count++;
-                }
-                tiempoRetardo = Environment.TickCount - tiempoRetardo;
-                if (cliente.estadoHuella == 1)
-                {
-                    //IDENTIFICACION
-                    pictureBox1.BackColor = Color.Green;
-                    mensajeEmergente(cliente.sUsuario + ", Tiempo: " + tiempoRetardo + " ms", "Identificado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                if(cliente.estadoHuella == -1)
-                {
-                    //ERROR IDENTIFICACION
-                    pictureBox1.BackColor = Color.Yellow;
-                    mensajeEmergente("No identificado, Tiempo: " + tiempoRetardo + " ms", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
+                mensajeEmergente("No hay información de huella recogida para verificar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -206,7 +152,7 @@ namespace FingerClient
         /// <param name="titulo">Texto a mostrar en la parte superior de la ventana</param>
         /// <param name="tipoBoton">Botones a mostrar en la ventana</param>
         /// <param name="tipoIcono">Icono descriptivo a mostrat</param>
-        void mensajeEmergente(string texto, string titulo, MessageBoxButtons tipoBoton, MessageBoxIcon tipoIcono) {
+        static void mensajeEmergente(string texto, string titulo, MessageBoxButtons tipoBoton, MessageBoxIcon tipoIcono) {
             MessageBox.Show(texto, titulo, tipoBoton, tipoIcono);
         }
 

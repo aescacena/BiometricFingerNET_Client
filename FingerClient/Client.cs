@@ -67,7 +67,7 @@ namespace FingerClient
         {
             int bytesRead;
             string estado = "INICIAL";
-            ComunicacionStream cS = new ComunicacionStream(tcpClient.GetStream());
+            ComunicacionStream cS = new ComunicacionStream(clientStream);
             while (started)
             {
                 bytesRead = 0;
@@ -81,6 +81,7 @@ namespace FingerClient
                             Console.WriteLine("Envia imagen de huella dactilar");
                             cS.enviaCadena("VERIFICA_HUELLA");
                             Image image = buffer.huella;
+                            image.Save("c:\\imagenCLIENTE.jpg");
                             cS.enviaImagen(image);
                             estado = "RECIBE_USUARIO";
                             break;

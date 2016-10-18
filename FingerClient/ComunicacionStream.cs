@@ -10,6 +10,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.AxHost;
 
 namespace FingerClient
 {
@@ -70,16 +71,31 @@ namespace FingerClient
         public Fingerprint leeImage()
         {
             int len = 0;
-
             len = ioStream.ReadByte() * 256;
             len += ioStream.ReadByte();
             byte[] inBuffer = new byte[len];
-            ioStream.Read(inBuffer, 0, len);
+            int aux = 0;
+
+            for (int i = len; i > 0; i = i - 1024)
+            {
+                if (i < 1024)
+                {
+                    ioStream.Read(inBuffer, aux, i);
+                }
+                else
+                {
+                    ioStream.Read(inBuffer, aux, 1024);
+                    aux += 1024;
+                }
+            }
+
+            ioStream.Flush();
             Bitmap bmp;
             using (var ms = new MemoryStream(inBuffer))
             {
                 Image image = Image.FromStream(ms);
                 bmp = (Bitmap)image;
+                image.Save("c:\\imagenCLIENTE_RECIBIDA.jpg");
             }
 
             Fingerprint fingerPrint = new Fingerprint();
@@ -87,39 +103,36 @@ namespace FingerClient
 
             return fingerPrint;
         }
+
+        /// <summary>
+        /// Envia imagen
+        /// </summary>
+        /// <remarks>
+        /// Envia una Image mediante el Stream de la conexión TCP Cliente/Servidor.
+        /// </remarks>
+        /// <returns>int</returns>
         public int enviaImagen(Image image)
         {
             byte[] imageData;
+            int len;
             using (var ms = new MemoryStream())
             {
                 image.Save(ms, ImageFormat.Jpeg);
                 imageData = ms.ToArray();
+                len = imageData.Length;
+
+                if (len > UInt16.MaxValue)
+                {
+                    len = (int)UInt16.MaxValue;
+                }
+
+                ioStream.WriteByte((byte)(len / 256));
+                ioStream.WriteByte((byte)(len & 255));
+                ioStream.Write(imageData, 0, len);
+                ioStream.Flush();
             }
 
-            //byte[] outBuffer = streamEncoding.GetBytes(outString);
-            int len = imageData.Length;
-            if (len > UInt16.MaxValue)
-            {
-                len = (int)UInt16.MaxValue;
-            }
-
-            ioStream.WriteByte((byte)(len / 256));
-            ioStream.WriteByte((byte)(len & 255));
-            ioStream.Write(imageData, 0, len);
-            ioStream.Flush();
-
-            return 1;
-
-            /*byte[] imageData;
-            using (var ms = new MemoryStream())
-            {
-                image.Save(ms, ImageFormat.Jpeg);
-                imageData = ms.GetBuffer();
-                ms.Close();
-            }
-            BinaryWriter br = new BinaryWriter(tcpClient.GetStream());
-            br.Write(imageData);
-            br.Close();*/
+            return len;
         }
 
         public int enviaUsuario(Usuario usuario)
