@@ -27,6 +27,7 @@ namespace FingerClient
         private int port;
         private bool started = false;
         public int estadoHuella = 0;
+        public string sUsuario { get; set; }
 
         /// <summary>
         /// Construye un nuevo cliente
@@ -87,7 +88,7 @@ namespace FingerClient
                             //bloquea hasta que un cliente envía imagen de dedo
                             Console.WriteLine("Recibe usuario correspondiente a la huella dactilar");
                             //Usuario usuario = cS.recibeUsuario();
-                            string sUsuario = cS.leeCadena();
+                            sUsuario = cS.leeCadena();
 
                             if (sUsuario == "NO VERIFICADO")
                             {

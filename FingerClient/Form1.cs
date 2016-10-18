@@ -120,8 +120,8 @@ namespace FingerClient
         {
             cliente = new Client();
             cliente.setHuella(huella);
-            //cliente.ConnectToServer("161.33.129.182", 8888);
-            cliente.ConnectToServer("192.168.1.137", 8888);
+            cliente.ConnectToServer("161.33.129.184", 8888);
+            //cliente.ConnectToServer("192.168.1.137", 8888);
 
             if (!cliente.IsConnected())
             {
@@ -139,11 +139,13 @@ namespace FingerClient
                 {
                     //IDENTIFICACION
                     pictureBox1.BackColor = Color.Green;
+                    mensajeEmergente(cliente.sUsuario, "Identificado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 if(cliente.estadoHuella == -1)
                 {
                     //ERROR IDENTIFICACION
                     pictureBox1.BackColor = Color.Yellow;
+                    mensajeEmergente("No identificado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
         }
