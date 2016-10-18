@@ -196,6 +196,13 @@ namespace FingerClient
                 mensajeEmergente("Error al inicializar lector de huella", "Error "+ iError, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
+        /// <summary>
+        /// Función para mandar mensaje en una ventana emergente.
+        /// </summary>
+        /// <param name="texto">Texto descriptivo a mostrar</param>
+        /// <param name="titulo">Texto a mostrar en la parte superior de la ventana</param>
+        /// <param name="tipoBoton">Botones a mostrar en la ventana</param>
+        /// <param name="tipoIcono">Icono descriptivo a mostrat</param>
         void mensajeEmergente(string texto, string titulo, MessageBoxButtons tipoBoton, MessageBoxIcon tipoIcono) {
             MessageBox.Show(texto, titulo, tipoBoton, tipoIcono);
         }
