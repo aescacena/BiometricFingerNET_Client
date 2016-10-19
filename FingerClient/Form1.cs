@@ -58,7 +58,8 @@ namespace FingerClient
                 Int32 tiempoRetardo = Environment.TickCount;
                 cliente = new Client();
                 cliente.setHuella(huella);
-                cliente.ConnectToServer("161.33.129.211", 8888);
+                Console.WriteLine(textBox1.SelectedText);
+                cliente.ConnectToServer(textBox1.SelectedText, 8888);
                 //cliente.ConnectToServer("192.168.1.137", 8888);
 
                 if (!cliente.IsConnected())
@@ -74,8 +75,6 @@ namespace FingerClient
                         count++;
                     }
                     tiempoRetardo = Environment.TickCount - tiempoRetardo;
-
-                    mensajeEmergente(cliente.lenImagen.ToString(), "MENSAJE DEBUG", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                     if (cliente.estadoHuella == 1)
                     {
@@ -209,14 +208,16 @@ namespace FingerClient
                 }
             }
 
-            // Muestra el cuadro de diálogo Abrir archivo. Si el usuario hace clic en OK, cargua la 
-            // imagen que el usuario elije.
-            //if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            // {
-            //     pictureBox1.Load(openFileDialog1.FileName);
-            //     huella = pictureBox1.Image;
-            // }
             pictureBox1.Refresh();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(textBox1.Text))
+            {
+                textBox1.SelectionStart = 14;
+                textBox1.SelectionLength = textBox1.Text.Length;
+            }
         }
     }
 }

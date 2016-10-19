@@ -39,6 +39,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -58,6 +59,7 @@
             this.flowLayoutPanel1.Controls.Add(this.Guardar);
             this.flowLayoutPanel1.Controls.Add(this.botonBorrar);
             this.flowLayoutPanel1.Controls.Add(this.botonCerrar);
+            this.flowLayoutPanel1.Controls.Add(this.textBox1);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(162, 480);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -148,6 +150,14 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(489, 3);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(155, 20);
+            this.textBox1.TabIndex = 6;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -179,6 +189,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button Inicializa;
         private System.Windows.Forms.FontDialog fontDialog1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 
